@@ -12,11 +12,10 @@ const Alert = model('alert');
  * Create Alert Helper class
  */
 class AlertHelper extends Helper {
-
   /**
    * Construct Alert Helper class
    */
-  constructor () {
+  constructor() {
     // Run super
     super();
 
@@ -24,8 +23,8 @@ class AlertHelper extends Helper {
     this._emitAlert = this._emitAlert.bind(this);
 
     // Bind public methods
-    this.user    = this.user.bind(this);
-    this.socket  = this.socket.bind(this);
+    this.user = this.user.bind(this);
+    this.socket = this.socket.bind(this);
     this.session = this.session.bind(this);
   }
 
@@ -43,13 +42,13 @@ class AlertHelper extends Helper {
    *
    * @async
    */
-  async _emitAlert (socketType, socketReceiver, type, message, opts = {}, medium = 'helper') {
+  async _emitAlert(socketType, socketReceiver, type, message, opts = {}, medium = 'helper') {
     // Create alert object
     const data = {
-      'type'    : type,
-      'opts'    : opts,
-      'done'    : false,
-      'medium'  : medium
+      type,
+      opts,
+      done    : false,
+      medium,
     };
 
     // Add message to data opts
@@ -97,7 +96,7 @@ class AlertHelper extends Helper {
    *
    * @async
    */
-  async user (user, type, message, opts = {}, medium = 'helper') {
+  async user(user, type, message, opts = {}, medium = 'helper') {
     // Emit alert to user
     await this._emitAlert('user', user, type, message, opts, medium);
   }
@@ -113,7 +112,7 @@ class AlertHelper extends Helper {
    *
    * @async
    */
-  async socket (socket, type, message, opts = {}, medium = 'helper') {
+  async socket(socket, type, message, opts = {}, medium = 'helper') {
     // Emit alert to socket
     await this._emitAlert('socket', socket, type, message, opts, medium);
   }
@@ -129,11 +128,10 @@ class AlertHelper extends Helper {
    *
    * @async
    */
-  async session (session, type, message, opts = {}, medium = 'helper') {
+  async session(session, type, message, opts = {}, medium = 'helper') {
     // Emit alert to session
     await this._emitAlert('session', session, type, message, opts, medium);
   }
-
 }
 
 /**
