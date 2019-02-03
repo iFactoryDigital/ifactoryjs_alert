@@ -16,11 +16,10 @@ const alertHelper = helper('alert');
  * @priority 80
  */
 class AlertController extends Controller {
-
   /**
    * Construct Alert Controller class
    */
-  constructor () {
+  constructor() {
     // Run super
     super();
 
@@ -28,9 +27,9 @@ class AlertController extends Controller {
     this.build = this.build.bind(this);
 
     // Bind private methods
-    this._sent       = this._sent.bind(this);
-    this._render     = this._render.bind(this);
-    this._connect    = this._connect.bind(this);
+    this._sent = this._sent.bind(this);
+    this._render = this._render.bind(this);
+    this._connect = this._connect.bind(this);
     this._middleware = this._middleware.bind(this);
 
     // Bind super private methods
@@ -43,16 +42,16 @@ class AlertController extends Controller {
   /**
    * Build Alert Controller
    */
-  build () {
+  build() {
     // Run middleware
     this.eden.router.use(this._middleware);
 
     // Run on sent
-    this.eden.on('socket.connect',   this._connect);
+    this.eden.on('socket.connect', this._connect);
     this.eden.on('socket.user.sent', this._sent);
 
     // Hooks
-    this.eden.pre('socket.call.opts',     this._socket);
+    this.eden.pre('socket.call.opts', this._socket);
     this.eden.pre('socket.endpoint.opts', this._socket);
 
     // View hooks
@@ -68,7 +67,7 @@ class AlertController extends Controller {
    *
    * @async
    */
-  async _sent (data) {
+  async _sent(data) {
     // Check if id
     if (!data || !data.id) return;
 
@@ -91,14 +90,14 @@ class AlertController extends Controller {
    *
    * @async
    */
-  async _render ({ req, res, render }) {
+  async _render({ req, res, render }) {
     // Get alerts
     const alerts = await Alert.where({
-      'done' : false
+      done : false,
     }).or({
-      'user.id' : req.user ? req.user.get('_id').toString() : 'no.user'
+      'user.id' : req.user ? req.user.get('_id').toString() : 'no.user',
     }, {
-      'session' : req.sessionID
+      session : req.sessionID,
     }).find();
 
     // Set content
@@ -119,14 +118,14 @@ class AlertController extends Controller {
    *
    * @async
    */
-  async _connect (data) {
+  async _connect(data) {
     // Check for alerts
     const alerts = await Alert.where({
-      'done' : false
+      done : false,
     }).or({
-      'user.id' : data.user ? data.user.get('_id').toString() : 'no.user'
+      'user.id' : data.user ? data.user.get('_id').toString() : 'no.user',
     }, {
-      'session' : data.sessionID
+      session : data.sessionID,
     }).find();
 
     // Loop alerts
@@ -144,7 +143,7 @@ class AlertController extends Controller {
    *
    * @param {object} opts
    */
-  _socket (opts) {
+  _socket(opts) {
     // Create alert function
     opts.alert = (...args) => {
       // Return helper alert
@@ -161,7 +160,7 @@ class AlertController extends Controller {
    *
    * @private
    */
-  _middleware (req, res, next) {
+  _middleware(req, res, next) {
     // Create alert function
     req.alert = res.alert = (type = 'error', message = '', opts = {}) => {
       // Return helper alert
@@ -179,7 +178,7 @@ class AlertController extends Controller {
    *
    * @return {*}
    */
-  async __done (alert) {
+  async __done(alert) {
     // Check if should keep
     if (!(alert.get('opts') || {}).keep) return await alert.remove();
 
@@ -189,7 +188,6 @@ class AlertController extends Controller {
     // Save alert
     await alert.save();
   }
-
 }
 
 /**

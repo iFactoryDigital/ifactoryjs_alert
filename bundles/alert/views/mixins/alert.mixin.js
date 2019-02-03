@@ -3,10 +3,10 @@ riot.mixin('alert', {
   /**
    * On init function
    */
-  'init' : function () {
+  init() {
     // Set alert object
     this.alert = {
-      'alerts' : []
+      alerts : [],
     };
 
     // Check frontend
@@ -24,8 +24,8 @@ riot.mixin('alert', {
    *
    * @private
    */
-  '__alertEvent' : function () {
+  __alertEvent() {
     // Update view
     if (this.isMounted) this.update();
-  }
+  },
 });

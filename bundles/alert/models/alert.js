@@ -5,11 +5,10 @@ const Model = require('model');
  * Create Alert Model class
  */
 class Alert extends Model {
-
   /**
    * Construct Alert Model class
    */
-  constructor () {
+  constructor() {
     // Run super
     super(...arguments);
 
@@ -20,10 +19,10 @@ class Alert extends Model {
   /**
    * Create indexes on Alert
    */
-  static async initialize () {
+  static async initialize() {
     // Create indexes
     await this.createIndex('done', {
-      'done' : -1
+      done : -1,
     });
   }
 
@@ -32,7 +31,7 @@ class Alert extends Model {
    *
    * @return {object}
    */
-  async sanitise () {
+  async sanitise() {
     // Check arguments
     if (arguments && arguments.length) {
       // Return sanitised with arguments
@@ -41,18 +40,17 @@ class Alert extends Model {
 
     // Return sanitised with default
     return await super.__sanitiseModel({
-      'field'          : '_id',
-      'sanitisedField' : 'id',
-      'default'        : false
+      field          : '_id',
+      sanitisedField : 'id',
+      default        : false,
     }, {
-      'field'   : 'type',
-      'default' : 'info'
+      field   : 'type',
+      default : 'info',
     }, {
-      'field'   : 'opts',
-      'default' : ''
+      field   : 'opts',
+      default : '',
     });
   }
-
 }
 
 /**

@@ -10,11 +10,10 @@ const socket = require('socket/public/js/bootstrap');
  * Create Alert class
  */
 class Alert extends EventEmitter {
-
   /**
    * Construct Alert class
    */
-  constructor () {
+  constructor() {
     // Run super
     super(...arguments);
 
@@ -26,7 +25,7 @@ class Alert extends EventEmitter {
     this._notify = (typeof window.Notification !== 'undefined' && window.Notification.permission === 'granted');
 
     // Bind public methods
-    this.alert  = this.alert.bind(this); // @todo remove
+    this.alert = this.alert.bind(this); // @todo remove
     this.notify = this.notify.bind(this);
 
     // Add alert error function
@@ -75,7 +74,7 @@ class Alert extends EventEmitter {
     });
 
     // Register notification
-    if (!this._notify && typeof window.Notification !== 'undefined' &&  window.Notification.permission !== 'denied') this._register();
+    if (!this._notify && typeof window.Notification !== 'undefined' && window.Notification.permission !== 'denied') this._register();
 
     // On alerts
     store.on('alerts', (alerts) => {
@@ -94,14 +93,14 @@ class Alert extends EventEmitter {
    *
    * @async
    */
-  async alert (type, opts) {
+  async alert(type, opts) {
     // Set opts
     opts = typeof opts === 'string' ? {
-      'text' : opts
+      text : opts,
     } : opts;
 
     // Set opts type
-    opts.type  = type === 'error' ? 'danger' : type;
+    opts.type = type === 'error' ? 'danger' : type;
 
     // Set opts close function
     opts.close = () => {
@@ -128,7 +127,7 @@ class Alert extends EventEmitter {
     };
 
     // Set opts visible and position
-    opts.visible  = true;
+    opts.visible = true;
     opts.position = opts.position || 'top-right';
 
     // Check id
@@ -141,8 +140,8 @@ class Alert extends EventEmitter {
     if (document.hidden && this._notify && opts.display !== 'alert') {
       // Document is hidden
       return this.notify(type.charAt(0).toUpperCase() + type.substr(1), {
-        'body' : opts.text,
-        'icon' : opts.icon || window.eden.config.logo
+        body : opts.text,
+        icon : opts.icon || window.eden.config.logo,
       });
     }
 
@@ -165,7 +164,7 @@ class Alert extends EventEmitter {
    * @param {string} title
    * @param {object} opts
    */
-  notify (title, opts) {
+  notify(title, opts) {
     // Set opts
     opts = opts || {};
 
@@ -184,7 +183,7 @@ class Alert extends EventEmitter {
    *
    * @returns {string}
    */
-  _uuid () {
+  _uuid() {
     // Create seed 4 function
     const s4 = () => {
       // Return random digits
@@ -194,7 +193,7 @@ class Alert extends EventEmitter {
     };
 
     // Return random string
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    return `${s4() + s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
   }
 
   /**
@@ -202,7 +201,7 @@ class Alert extends EventEmitter {
    *
    * @param {array} alerts
    */
-  _alerts (alerts) {
+  _alerts(alerts) {
     // Loop alerts
     alerts.forEach(async (data) => {
       // Hook alert
@@ -218,14 +217,13 @@ class Alert extends EventEmitter {
    *
    * @private
    */
-  _register () {
+  _register() {
     // Request notification permission
     Notification.requestPermission().then(() => {
       // Set notify
       this._notify = (typeof window.Notification !== 'undefined' && Notification.permission === 'granted');
     });
   }
-
 }
 
 /**
